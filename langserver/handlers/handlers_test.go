@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -18,11 +17,6 @@ import (
 )
 
 func initializeResponse(t *testing.T, commandPrefix string) string {
-	jsonArray, err := json.Marshal(handlers.Names(commandPrefix))
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	return fmt.Sprintf(`{
 		"jsonrpc": "2.0",
 		"id": 1,
@@ -30,18 +24,31 @@ func initializeResponse(t *testing.T, commandPrefix string) string {
 			"capabilities": {
 				"textDocumentSync": {
 					"openClose": true,
-					"change": 2
+					"change": 2,
+					"save": {}
 				},
-				"hoverProvider": true,
 				"completionProvider": {},
-				"documentSymbolProvider":true,
-				"documentFormattingProvider":true,
+				"hoverProvider": true,
+				"signatureHelpProvider": {},
+				"documentSymbolProvider": true,
+				"codeLensProvider": {},
+				"documentLinkProvider": {},
+				"documentFormattingProvider": true,
+				"documentOnTypeFormattingProvider": {
+					"firstTriggerCharacter": ""
+				},
 				"executeCommandProvider": {
-					"commands": %s
+					"commands": %q
+				},
+				"workspace": {
+					"workspaceFolders": {}
 				}
+			},
+			"serverInfo": {
+				"name": ""
 			}
 		}
-	}`, string(jsonArray))
+	}`, handlers.Names(commandPrefix))
 }
 
 func TestInitalizeAndShutdown(t *testing.T) {
@@ -57,8 +64,8 @@ func TestInitalizeAndShutdown(t *testing.T) {
 	ls.CallAndExpectResponse(t, &langserver.CallRequest{
 		Method: "initialize",
 		ReqParams: fmt.Sprintf(`{
-	    "capabilities": {},
-	    "rootUri": %q,
+		"capabilities": {},
+		"rootUri": %q,
 		"processId": 12345
 	}`, tmpDir.URI())}, initializeResponse(t, ""))
 	ls.CallAndExpectResponse(t, &langserver.CallRequest{
@@ -83,8 +90,8 @@ func TestInitalizeWithCommandPrefix(t *testing.T) {
 	ls.CallAndExpectResponse(t, &langserver.CallRequest{
 		Method: "initialize",
 		ReqParams: fmt.Sprintf(`{
-	    "capabilities": {},
-	    "rootUri": %q,
+		"capabilities": {},
+		"rootUri": %q,
 		"processId": 12345,
 		"initializationOptions": {
 			"commandPrefix": "1"
@@ -106,8 +113,8 @@ func TestEOF(t *testing.T) {
 	ls.CallAndExpectResponse(t, &langserver.CallRequest{
 		Method: "initialize",
 		ReqParams: fmt.Sprintf(`{
-	    "capabilities": {},
-	    "rootUri": %q,
+		"capabilities": {},
+		"rootUri": %q,
 		"processId": 12345
 	}`, tmpDir.URI())}, initializeResponse(t, ""))
 
