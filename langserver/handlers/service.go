@@ -35,6 +35,7 @@ type service struct {
 	newRootModuleManager rootmodule.RootModuleManagerFactory
 	newWatcher           watcher.WatcherFactory
 	newWalker            rootmodule.WalkerFactory
+	additionalHandlers   map[string]rpch.Func
 }
 
 var discardLogs = log.New(ioutil.Discard, "", 0)
@@ -292,6 +293,13 @@ func (svc *service) Assigner() (jrpc2.Assigner, error) {
 
 			return handle(ctx, req, CancelRequest)
 		},
+	}
+
+	// For use in tests, e.g. to test request cancellation
+	if len(svc.additionalHandlers) > 0 {
+		for methodName, handlerFunc := range svc.additionalHandlers {
+			m[methodName] = handlerFunc
+		}
 	}
 
 	return convertMap(m), nil

@@ -7,6 +7,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/creachadair/jrpc2/handler"
 	"github.com/hashicorp/terraform-ls/internal/filesystem"
 	"github.com/hashicorp/terraform-ls/internal/terraform/exec"
 	"github.com/hashicorp/terraform-ls/internal/terraform/rootmodule"
@@ -15,9 +16,10 @@ import (
 )
 
 type MockSessionInput struct {
-	RootModules       map[string]*rootmodule.RootModuleMock
-	Filesystem        filesystem.Filesystem
-	TfExecutorFactory exec.ExecutorFactory
+	RootModules        map[string]*rootmodule.RootModuleMock
+	Filesystem         filesystem.Filesystem
+	TfExecutorFactory  exec.ExecutorFactory
+	AdditionalHandlers map[string]handler.Func
 }
 
 type mockSession struct {
@@ -40,10 +42,13 @@ func (ms *mockSession) new(srvCtx context.Context) session.Session {
 	}
 
 	var fs filesystem.Filesystem
-	if ms.mockInput != nil && ms.mockInput.Filesystem != nil {
-		fs = ms.mockInput.Filesystem
-	} else {
-		fs = filesystem.NewFilesystem()
+	fs = filesystem.NewFilesystem()
+	var handlers map[string]handler.Func
+	if ms.mockInput != nil {
+		if ms.mockInput.Filesystem != nil {
+			fs = ms.mockInput.Filesystem
+		}
+		handlers = ms.mockInput.AdditionalHandlers
 	}
 
 	svc := &service{
@@ -55,6 +60,7 @@ func (ms *mockSession) new(srvCtx context.Context) session.Session {
 		newRootModuleManager: rootmodule.NewRootModuleManagerMock(input),
 		newWatcher:           watcher.MockWatcher(),
 		newWalker:            rootmodule.MockWalker,
+		additionalHandlers:   handlers,
 	}
 
 	return svc
