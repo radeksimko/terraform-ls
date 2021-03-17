@@ -8,12 +8,14 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/google/go-cmp v0.5.5
 	github.com/google/uuid v1.2.0
+	github.com/hashicorp/go-memdb v1.3.2
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hashicorp/go-version v1.2.1
 	github.com/hashicorp/hcl-lang v0.0.0-20210311200725-da0537032422
 	github.com/hashicorp/hcl/v2 v2.9.1
 	github.com/hashicorp/terraform-exec v0.13.0
 	github.com/hashicorp/terraform-json v0.8.0
+	github.com/hashicorp/terraform-registry-address v0.0.0-00010101000000-000000000000
 	github.com/hashicorp/terraform-schema v0.0.0-20210311201134-58cdd74b1165
 	github.com/mh-cbon/go-fmt-fail v0.0.0-20160815164508-67765b3fbcb5
 	github.com/mitchellh/cli v1.1.2
@@ -27,3 +29,5 @@ require (
 	github.com/vektra/mockery/v2 v2.6.0
 	github.com/zclconf/go-cty v1.8.0
 )
+
+replace github.com/hashicorp/terraform-registry-address => ../terraform-registry-address
