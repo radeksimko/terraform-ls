@@ -1,7 +1,9 @@
 package datadir
 
 import (
-	"github.com/hashicorp/go-getter"
+	"os"
+	"strings"
+
 	tfregistry "github.com/hashicorp/terraform-registry-address"
 )
 
@@ -31,19 +33,24 @@ func (r *ModuleRecord) GetModuleType() ModuleType {
 	}
 
 	// Example: github.com/terraform-aws-modules/terraform-aws-security-group
-	if _, ok, _ := new(getter.GitHubDetector).Detect(r.SourceAddr, ""); ok {
+	if strings.HasPrefix(r.SourceAddr, "github.com/") {
 		return GITHUB
 	}
 
 	// Example: git::https://example.com/vpc.git
-	if _, ok, _ := new(getter.GitDetector).Detect(r.SourceAddr, ""); ok {
+	if strings.HasPrefix(r.SourceAddr, "git::") {
 		return GIT
 	}
 
 	// Local, non relative, file paths
-	if _, ok, _ := new(getter.FileDetector).Detect(r.SourceAddr, ""); ok {
+	if strings.HasPrefix(r.SourceAddr, "."+string(os.PathSeparator)) || dirExists(r.SourceAddr) {
 		return LOCAL
 	}
 
 	return UNKNOWN
+}
+
+func dirExists(path string) bool {
+	fi, err := os.Stat(path)
+	return err == nil && fi.IsDir()
 }
