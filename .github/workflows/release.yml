@@ -56,16 +56,16 @@ jobs:
 #         uses: hashicorp/setup-hc-releases@v1
 #         with:
 #           github-token: ${{ secrets.CODESIGN_GITHUB_TOKEN }}
-      -
-        name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.TERRAFORM_PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.TERRAFORM_PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-          role-to-assume: ${{ secrets.TERRAFORM_PROD_AWS_ROLE_TO_ASSUME }}
-          role-skip-session-tagging: true
-          role-duration-seconds: 3600
+#       -
+#         name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.TERRAFORM_PROD_AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.TERRAFORM_PROD_AWS_SECRET_ACCESS_KEY }}
+#           aws-region: us-east-1
+#           role-to-assume: ${{ secrets.TERRAFORM_PROD_AWS_ROLE_TO_ASSUME }}
+#           role-skip-session-tagging: true
+#           role-duration-seconds: 3600
       -
         name: Release
         uses: goreleaser/goreleaser-action@v2
