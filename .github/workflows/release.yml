@@ -50,6 +50,8 @@ jobs:
       -
         name: Install signore
         uses: hashicorp/setup-signore-package@v1
+        with:
+          token: ${{ secrets.SIGNORE_GITHUB_TOKEN }}
 #       -
 #         uses: hashicorp/setup-hc-releases@v1
 #         with:
