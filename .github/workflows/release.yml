@@ -50,10 +50,10 @@ jobs:
       -
         name: Install signore
         uses: hashicorp/setup-signore-package@v1
-      -
-        uses: hashicorp/setup-hc-releases@v1
-        with:
-          github-token: ${{ secrets.CODESIGN_GITHUB_TOKEN }}
+#       -
+#         uses: hashicorp/setup-hc-releases@v1
+#         with:
+#           github-token: ${{ secrets.CODESIGN_GITHUB_TOKEN }}
       -
         name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
