@@ -25,15 +25,15 @@ builds:
     ignore:
       - goarch: '386'
         goos: darwin
-    hooks:
-      post: |
-        docker run
-          -e ARTIFACTORY_TOKEN={{ .Env.ARTIFACTORY_TOKEN }}
-          -e ARTIFACTORY_USER={{ .Env.ARTIFACTORY_USER }}
-          -e CIRCLE_TOKEN={{ .Env.CIRCLE_TOKEN }}
-          -v {{ dir .Path }}:/workdir
-          {{ .Env.CODESIGN_IMAGE }}
-          sign -product-name={{ .ProjectName }} {{ .Name }}
+#     hooks:
+#       post: |
+#         docker run
+#           -e ARTIFACTORY_TOKEN={{ .Env.ARTIFACTORY_TOKEN }}
+#           -e ARTIFACTORY_USER={{ .Env.ARTIFACTORY_USER }}
+#           -e CIRCLE_TOKEN={{ .Env.CIRCLE_TOKEN }}
+#           -v {{ dir .Path }}:/workdir
+#           {{ .Env.CODESIGN_IMAGE }}
+#           sign -product-name={{ .ProjectName }} {{ .Name }}
   -
     mod_timestamp: '{{ .CommitTimestamp }}'
     flags:
