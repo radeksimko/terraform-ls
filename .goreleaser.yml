@@ -88,38 +88,32 @@ checksum:
 #     args: ["sign", "--dearmor", "--file", "${artifact}", "--out", "${signature}"]
 #     artifacts: checksum
 
-brews:
-  -
-    tap:
-      owner: hashicorp
-      name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-    skip_upload: auto
-    url_template: "https://releases.hashicorp.com/terraform-ls/{{ .Version }}/{{ .ArtifactName }}"
-    commit_author:
-      name: hc-espd-packager
-      email: team-product-delivery@hashicorp.com
-    folder: Formula
-    homepage: "https://github.com/hashicorp/terraform-ls"
-    description: "Terraform Language Server"
-    conflicts:
-      - terraform-ls
-    install: |
-      bin.install "terraform-ls"
-    test: |
-      system "#{bin}/terraform-ls --version"
+# brews:
+#   -
+#     tap:
+#       owner: hashicorp
+#       name: homebrew-tap
+#       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+#     skip_upload: auto
+#     url_template: "https://releases.hashicorp.com/terraform-ls/{{ .Version }}/{{ .ArtifactName }}"
+#     commit_author:
+#       name: hc-espd-packager
+#       email: team-product-delivery@hashicorp.com
+#     folder: Formula
+#     homepage: "https://github.com/hashicorp/terraform-ls"
+#     description: "Terraform Language Server"
+#     conflicts:
+#       - terraform-ls
+#     install: |
+#       bin.install "terraform-ls"
+#     test: |
+#       system "#{bin}/terraform-ls --version"
 
 publishers:
   - name: "hc-releases"
     checksum: true
     signature: true
-    env:
-      - AWS_DEFAULT_REGION={{ .Env.AWS_DEFAULT_REGION }}
-      - AWS_REGION={{ .Env.AWS_REGION }}
-      - AWS_ACCESS_KEY_ID={{ .Env.AWS_ACCESS_KEY_ID }}
-      - AWS_SECRET_ACCESS_KEY={{ .Env.AWS_SECRET_ACCESS_KEY }}
-      - AWS_SESSION_TOKEN={{ .Env.AWS_SESSION_TOKEN }}
-    cmd: hc-releases upload-file {{ abs .ArtifactPath }}
+    cmd: echo hc-releases upload-file {{ abs .ArtifactPath }}
 
 milestones:
   - name_template: "{{ .Tag }}"
