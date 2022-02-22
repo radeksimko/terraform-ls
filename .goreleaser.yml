@@ -73,20 +73,20 @@ checksum:
   name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 
-signs:
-  -
-    id: with_key_id
-    # TODO: Replace with variable once signore provides the primary_key_id
-    signature: "${artifact}.72D7468F.sig"
-    cmd: signore
-    args: ["sign", "--dearmor", "--file", "${artifact}", "--out", "${signature}"]
-    artifacts: checksum
-  -
-    id: default
-    signature: "${artifact}.sig"
-    cmd: signore
-    args: ["sign", "--dearmor", "--file", "${artifact}", "--out", "${signature}"]
-    artifacts: checksum
+# signs:
+#   -
+#     id: with_key_id
+#     # TODO: Replace with variable once signore provides the primary_key_id
+#     signature: "${artifact}.72D7468F.sig"
+#     cmd: signore
+#     args: ["sign", "--dearmor", "--file", "${artifact}", "--out", "${signature}"]
+#     artifacts: checksum
+#   -
+#     id: default
+#     signature: "${artifact}.sig"
+#     cmd: signore
+#     args: ["sign", "--dearmor", "--file", "${artifact}", "--out", "${signature}"]
+#     artifacts: checksum
 
 brews:
   -
